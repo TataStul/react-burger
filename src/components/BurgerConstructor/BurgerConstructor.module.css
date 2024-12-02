@@ -1,0 +1,31 @@
+.gridColumn,
+.grid,
+.elementsGrid,
+.buttonGrid {
+    display: flex;
+}
+
+.gridColumn {
+    flex-direction: column;
+}
+
+.grid {
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.elementsGrid {
+    flex-direction: column;
+    gap: 16px;
+}
+
+.buttonGrid {
+    align-items: center;
+    justify-content: end;
+}
+
+.scrollbar {
+    overflow: auto;
+    height:auto;
+    max-height: calc(100vh - 60vh);
+}
