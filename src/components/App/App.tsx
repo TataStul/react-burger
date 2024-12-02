@@ -1,42 +1,49 @@
 import React, {useEffect, useState} from 'react';
 import {getData} from "../../utils/data";
-import {Data} from "../../utils/data.type";
+import {Ingredient} from "../../utils/ingredient.type";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import BurgerIngredients from "./../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import styles from './App.module.css';
 
 function App() {
-  const [data, setData] = useState<Data[]>([]);
-  const [cart, setCart] = useState<Data[]>([])
+  const [data, setData] = useState<Ingredient[]>([]);
+  const [error, setError] = useState('');
 
   const fetchData = async () => {
     try {
-      const data = await getData();
-      setData(data);
+      const response = await getData();
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+      const result = await response.json();
+      setData(result.data);
     } catch (e) {
-      console.log(e);
+      setError((e as Error).message || 'An unexpected error occurred');
     }
-  }
-  
-  const addToCart = (element: Data) => {
-    setCart(oldCart => [...oldCart, element])
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  if (error) {
+    return (
+      <div className={`text text_type_main-default ${styles.app}`}>
+        <AppHeader />
+        <main className={styles.parent}>
+          <h1>{error}</h1>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className={`text text_type_main-default ${styles.app}`}>
       <AppHeader />
       <main className={styles.parent}>
-        <>
-          <BurgerIngredients data={data} onClick={addToCart} />
-        </>
-        <>
-          <BurgerConstructor data={data} cart={cart} />
-        </>
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
       </main>
     </div>
   );

@@ -1,0 +1,13 @@
+.grid,
+.macronutrients {
+    display: flex;
+}
+
+.grid {
+    flex-direction: column;
+    align-items: center;
+}
+
+.macronutrients {
+    gap: 20px;
+}
