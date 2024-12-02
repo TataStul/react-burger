@@ -1,0 +1,15 @@
+.card,
+.price {
+    display: flex;
+}
+
+.card {
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.counter {
+    left: 100px;
+    position: relative;
+}

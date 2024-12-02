@@ -1,0 +1,25 @@
+.scrollbar,
+.tab,
+.wrap {
+    display: flex;
+}
+
+.wrapper {
+    width: 600px;
+}
+
+.wrap {
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.wrap > * {
+    flex: 1 1 160px;
+}
+
+.scrollbar {
+    flex-direction: column;
+    overflow: auto;
+    height:auto;
+    max-height: calc(100vh - 35vh);
+}
