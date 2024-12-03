@@ -1,4 +1,3 @@
-import React from "react";
 import ItemHeader from "../ItemHeader/ItemHeader";
 import {
   BurgerIcon,
