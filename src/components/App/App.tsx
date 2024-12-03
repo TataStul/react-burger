@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { getData } from "../../utils/data";
-import { Ingredient } from "../../utils/ingredient.type";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UnknownAction } from "redux";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import BurgerIngredients from "./../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
+import { fetchIngredientsThunk } from "../../services/actions/BurgerIngredients";
 import styles from "./App.module.css";
 
-function App() {
-  const [data, setData] = useState<Ingredient[]>([]);
-  const [error, setError] = useState("");
+type ErrorType = {
+  message?: string;
+};
 
-  const fetchData = async () => {
-    try {
-      const result = await getData();
-      setData(result.data);
-    } catch (e) {
-      setError((e as Error).message || "An unexpected error occurred");
-    }
-  };
+function App() {
+  const dispatch = useDispatch();
+  const error = useSelector(
+    (state: { error?: ErrorType }) => state?.error?.message
+  );
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    dispatch(fetchIngredientsThunk() as unknown as UnknownAction);
+  }, [dispatch]);
 
   if (error) {
     return (
@@ -38,8 +38,14 @@ function App() {
     <div className={`text text_type_main-default ${styles.app}`}>
       <AppHeader />
       <main className={styles.parent}>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <DndProvider backend={HTML5Backend}>
+          <>
+            <BurgerIngredients />
+          </>
+          <>
+            <BurgerConstructor />
+          </>
+        </DndProvider>
       </main>
     </div>
   );

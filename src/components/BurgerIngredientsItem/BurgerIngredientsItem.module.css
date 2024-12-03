@@ -4,12 +4,17 @@
 }
 
 .card {
+  position: relative;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.cardDragging {
+  opacity: 0.5;
 }
 
 .counter {
   left: 100px;
-  position: relative;
 }
