@@ -1,0 +1,19 @@
+.navigation,
+.itemGroup,
+.grid {
+  display: flex;
+}
+
+.navigation {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #1c1c21;
+}
+
+.grid {
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+}
