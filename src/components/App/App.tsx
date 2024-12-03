@@ -1,25 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {getData} from "../../utils/data";
-import {Ingredient} from "../../utils/ingredient.type";
+import React, { useEffect, useState } from "react";
+import { getData } from "../../utils/data";
+import { Ingredient } from "../../utils/ingredient.type";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import BurgerIngredients from "./../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
-import styles from './App.module.css';
+import styles from "./App.module.css";
 
 function App() {
   const [data, setData] = useState<Ingredient[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const fetchData = async () => {
     try {
-      const response = await getData();
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}`);
-      }
-      const result = await response.json();
+      const result = await getData();
       setData(result.data);
     } catch (e) {
-      setError((e as Error).message || 'An unexpected error occurred');
+      setError((e as Error).message || "An unexpected error occurred");
     }
   };
 

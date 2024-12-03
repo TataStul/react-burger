@@ -1,19 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {Ingredient} from '../../utils/ingredient.type';
-import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import Modal from '../Modal/Modal';
-import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './BurgerConstructor.module.css'
+import React, { useEffect, useState } from "react";
+import { Ingredient } from "../../utils/ingredient.type";
+import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import Modal from "../Modal/Modal";
+import {
+  Button,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./BurgerConstructor.module.css";
 
 type Props = {
   data: Ingredient[];
-}
+};
 
 function BurgerConstructor({ data }: Props) {
   const [amount, setAmount] = useState<number>(0);
   const [cart, setCart] = useState<Ingredient[]>([]);
-  const [isOrderDetailsVisible, setIsOrderDetailsVisible] = useState<boolean>(false);
+  const [isOrderDetailsVisible, setIsOrderDetailsVisible] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (data.length) {
@@ -44,13 +48,13 @@ function BurgerConstructor({ data }: Props) {
 
   return (
     <div className={`mt-25 ${styles.gridColumn}`}>
-      <Modal isOpen={isOrderDetailsVisible} title='' onClick={handleCloseModal}>
+      <Modal isOpen={isOrderDetailsVisible} title="" onClick={handleCloseModal}>
         <OrderDetails />
       </Modal>
 
       <section className={`mb-10 ${styles.grid}`}>
         <BurgerConstructorItem
-          type='top'
+          type="top"
           title={`${bun.name} (верх)`}
           price={bun.price}
           thumbnail={bun.image_mobile}
@@ -69,7 +73,7 @@ function BurgerConstructor({ data }: Props) {
         </div>
 
         <BurgerConstructorItem
-          type='bottom'
+          type="bottom"
           title={`${bun.name} (низ)`}
           price={bun.price}
           thumbnail={bun.image_mobile}
@@ -78,12 +82,12 @@ function BurgerConstructor({ data }: Props) {
       </section>
 
       <section className={styles.buttonGrid}>
-        <p className='text text_type_digits-medium'>{amount}</p>
-        <CurrencyIcon type='primary' className='mr-10' />
+        <p className="text text_type_digits-medium">{amount}</p>
+        <CurrencyIcon type="primary" className="mr-10" />
         <Button
-          htmlType='button'
-          type='primary'
-          size='medium'
+          htmlType="button"
+          type="primary"
+          size="medium"
           onClick={handleOrderClick}
         >
           Оформить заказ

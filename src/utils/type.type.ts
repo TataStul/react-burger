@@ -1,5 +1,5 @@
 export enum Type {
-    Main = 'main',
-    Bun = 'bun',
-    Sauce = 'sauce'
-  }
+  Main = "main",
+  Bun = "bun",
+  Sauce = "sauce",
+}

@@ -1,13 +1,13 @@
-import React from 'react';
-import styles from './ModalOverlay.module.css';
+import React from "react";
+import styles from "./ModalOverlay.module.css";
 
 type ModalOverlayProps = {
   onClick: () => void;
 };
 
-const MODAL_OVERLAY_ID = 'modal-overlay';
+const MODAL_OVERLAY_ID = "modal-overlay";
 
-const ModalOverlay: React.FC<ModalOverlayProps> = ({onClick}) => {
+const ModalOverlay: React.FC<ModalOverlayProps> = ({ onClick }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClick}>
       <div

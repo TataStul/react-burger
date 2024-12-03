@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {createPortal} from 'react-dom';
-import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './Modal.module.css';
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./Modal.module.css";
 
 type Props = {
   title: string;
@@ -12,18 +12,18 @@ type Props = {
 };
 
 enum Key {
-  Esc = 'Escape'
-};
+  Esc = "Escape",
+}
 
 type EventKey = {
   key: string;
 };
 
 enum BrowserActions {
-  Keydown = 'keydown'
-};
+  Keydown = "keydown",
+}
 
-const MODAL_OVERLAY_ID = 'modal-overlay';
+const MODAL_OVERLAY_ID = "modal-overlay";
 
 function Modal(props: Props) {
   const [portal, setPortal] = useState<HTMLElement | null>(null);
@@ -59,9 +59,9 @@ function Modal(props: Props) {
             createPortal(
               <>
                 <div className={styles.header}>
-                  <p className='text text_type_main-large'>{props.title}</p>
+                  <p className="text text_type_main-large">{props.title}</p>
                   <CloseIcon
-                    type='primary'
+                    type="primary"
                     onClick={() => props.onClick()}
                     className={styles.closeButton}
                   />
