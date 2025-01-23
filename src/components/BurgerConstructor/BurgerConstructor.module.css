@@ -1,7 +1,9 @@
 .gridColumn,
 .grid,
 .elementsGrid,
-.buttonGrid {
+.buttonGrid,
+.dndGrid,
+.noElementsGrid {
   display: flex;
 }
 
@@ -28,4 +30,19 @@
   overflow: auto;
   height: auto;
   max-height: calc(100vh - 60vh);
+}
+
+.dndGrid {
+  align-items: center;
+}
+
+.noElementsGrid {
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  border: 1px dashed white;
+}
+
+.noElementsGridTitle {
+  width: 80%;
 }

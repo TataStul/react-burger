@@ -1,4 +1,5 @@
-import React from "react";
+import { useDrag } from "react-dnd";
+import { Ingredient } from "../../utils/ingredient.type";
 import {
   Counter,
   CurrencyIcon,
@@ -6,26 +7,45 @@ import {
 import styles from "./BurgerIngredientsItem.module.css";
 
 type Props = {
-  title: string;
-  price: number;
-  srcImg: string;
+  element: Ingredient;
   count?: number;
 };
 
+enum DndType {
+  NewIngredient = "new-ingredient",
+  Ingredient = "ingredient",
+}
+
 function BurgerIngredientsItem(props: Props) {
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: DndType.NewIngredient,
+      item: props.element,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [props.element]
+  );
+
   return (
-    <div className={styles.card}>
-      {props.count && (
+    <div
+      ref={drag}
+      className={`${styles.card} ${isDragging ? styles.cardDragging : ""}`}
+    >
+      {props.count ? (
         <div className={styles.counter}>
           <Counter count={props.count} size="default" />
         </div>
-      )}
-      <img src={props.srcImg} alt={props.title} />
-      <div className={`pb-1 pt-1 ${styles.price}`}>
-        <p className="text text_type_digits-default pr-2">{props.price}</p>
+      ) : null}
+      <img src={props.element.image_mobile} alt={props.element.name} />
+      <div className={`pt-1 pb-1 ${styles.price}`}>
+        <p className="text text_type_digits-default pr-2">
+          {props.element.price}
+        </p>
         <CurrencyIcon type="primary" />
       </div>
-      <p>{props.title}</p>
+      <p>{props.element.name}</p>
     </div>
   );
 }

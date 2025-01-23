@@ -11,4 +11,5 @@ export type Ingredient = {
   image_mobile: string;
   image_large: string;
   __v: number;
+  uniqueId?: string;
 };

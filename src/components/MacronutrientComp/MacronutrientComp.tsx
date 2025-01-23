@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./MacronutrientComp.module.css";
 
 type Props = {

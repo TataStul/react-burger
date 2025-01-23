@@ -15,7 +15,7 @@
 }
 
 .wrap > * {
-  flex: 1 1 160px;
+  flex: 1 1 calc(50% - 12px);
 }
 
 .scrollbar {
