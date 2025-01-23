@@ -1,11 +1,7 @@
 import { request } from "../request";
+import { Request } from "../request.enum";
 
-enum Request {
-  POST = "POST",
-  GET = "GET",
-  DELETE = "DELETE",
-  PUT = "PUT",
-}
+import { UserResetPassword } from "../user-reset-password.type";
 
 const getData = () => {
   return request(`/ingredients`);
@@ -21,4 +17,24 @@ const makeOrder = (ingredients: string[]) => {
   });
 };
 
-export { getData, makeOrder };
+const rememberPassword = (email: string) => {
+  return request(`/password-reset`, {
+    method: Request.POST,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+};
+
+const resetPassword = (credits: UserResetPassword) => {
+  return request(`/password-reset/reset`, {
+    method: Request.POST,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credits),
+  });
+};
+
+export { getData, makeOrder, rememberPassword, resetPassword };

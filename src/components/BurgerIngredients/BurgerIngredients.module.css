@@ -24,3 +24,8 @@
   height: auto;
   max-height: calc(100vh - 35vh);
 }
+
+.link {
+  color: white;
+  text-decoration: none;
+}

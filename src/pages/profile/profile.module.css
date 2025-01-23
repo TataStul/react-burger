@@ -1,0 +1,31 @@
+.grid {
+  height: 90%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.textWidth {
+  width: 20%;
+}
+
+.logoutButton {
+  text-align: left;
+}
+
+.logoutButton button {
+  padding: 0 !important;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.saveButton {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

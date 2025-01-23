@@ -1,13 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { UnknownAction } from "redux";
 import { v4 as uuid4 } from "uuid";
-import { Ingredient } from "../../utils/ingredient.type";
-import { Type } from "../../utils/type.type";
+
+import {
+  Button,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
+
 import {
   ADDING_INGREDIENT,
   MOVING_INGREDIENT,
@@ -18,10 +24,12 @@ import {
   CLEARING_ORDER,
   fetchMakingOrderThunk,
 } from "../../services/actions/BurgerConstructor";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { checkUserAuthThunk } from "../../services/actions/Login";
+
+import { Ingredient } from "../../utils/ingredient.type";
+import { Type } from "../../utils/type.type";
+import { Order } from "../../utils/order.type";
+
 import styles from "./BurgerConstructor.module.css";
 
 enum DndType {
@@ -33,26 +41,40 @@ type ErrorType = {
   message?: string;
 };
 
+type BurgerConstructorSelector = {
+  burgerConstructor: {
+    burgerConstructor: Ingredient[];
+    buns: Ingredient | null;
+    amount: number;
+    order: Order;
+  };
+  user: {
+    isAuth: boolean;
+  };
+  error?: ErrorType;
+};
+
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const error = useSelector(
-    (state: { error?: ErrorType }) => state?.error?.message
+
+  const useBurgerConstructorSelector =
+    useSelector.withTypes<BurgerConstructorSelector>();
+
+  const error = useBurgerConstructorSelector((state) => state?.error?.message);
+
+  const ingredients = useBurgerConstructorSelector(
+    (state) => state.burgerConstructor.burgerConstructor
   );
-  const ingredients = useSelector(
-    (state: { burgerConstructor: { burgerConstructor: Ingredient[] } }) => {
-      return state.burgerConstructor.burgerConstructor;
-    }
+
+  const buns = useBurgerConstructorSelector(
+    (state) => state.burgerConstructor.buns
   );
-  const buns = useSelector(
-    (state: { burgerConstructor: { buns: Ingredient | null } }) => {
-      return state.burgerConstructor.buns;
-    }
+
+  const amount = useBurgerConstructorSelector(
+    (state) => state.burgerConstructor.amount
   );
-  const amount = useSelector(
-    (state: { burgerConstructor: { amount: number } }) => {
-      return state.burgerConstructor.amount;
-    }
-  );
+
+  const isAuth = useBurgerConstructorSelector((state) => state.user.isAuth);
 
   const [{ isOver }, drop] = useDrop({
     accept: DndType.NewIngredient,
@@ -73,6 +95,7 @@ function BurgerConstructor() {
       isOver: monitor.isOver(),
     }),
   });
+
   const moveIngredient = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       const dragItem = ingredients[dragIndex];
@@ -88,9 +111,16 @@ function BurgerConstructor() {
     [ingredients, dispatch]
   );
 
+  const navigate = useNavigate();
+  const [makingOrder, setMakingOrder] = useState<boolean>(false);
   const [oderDetails, setOrderDetails] = useState<boolean>(false);
 
   const showOrderDetails = () => {
+    setMakingOrder(true);
+    dispatch(checkUserAuthThunk() as unknown as UnknownAction);
+  };
+
+  const makeOrder = () => {
     let orderDetails = [];
     if (buns) {
       orderDetails = [...ingredients.map((v) => v._id), buns?._id, buns?._id];
@@ -99,6 +129,7 @@ function BurgerConstructor() {
     }
 
     dispatch(fetchMakingOrderThunk(orderDetails) as unknown as UnknownAction);
+
     setOrderDetails(true);
   };
 
@@ -107,6 +138,7 @@ function BurgerConstructor() {
     dispatch({
       type: CLEARING_ORDER,
     });
+    setMakingOrder(false);
   };
 
   useEffect(() => {
@@ -151,7 +183,6 @@ function BurgerConstructor() {
           <OrderDetails />
         </Modal>
       )}
-
       <section className={`mb-10 ${styles.grid}`}>
         {buns && Object.keys(buns).length ? (
           <BurgerConstructorItem
@@ -164,7 +195,6 @@ function BurgerConstructor() {
         ) : (
           ""
         )}
-
         {ingredients.length ? (
           <div className={`${styles.scrollbar} ${styles.elementsGrid}`}>
             {ingredients.map(
@@ -186,7 +216,6 @@ function BurgerConstructor() {
         ) : (
           ""
         )}
-
         {buns && Object.keys(buns).length ? (
           <BurgerConstructorItem
             type="bottom"
@@ -199,7 +228,6 @@ function BurgerConstructor() {
           ""
         )}
       </section>
-
       {!ingredients.length && !buns?._id && (
         <section className={`mb-10 ${styles.noElementsGrid}`}>
           <div className={`pt-25 pb-25 ${styles.noElementsGridTitle}`}>
@@ -210,7 +238,6 @@ function BurgerConstructor() {
           </div>
         </section>
       )}
-
       <section className={styles.buttonGrid}>
         <p className="text text_type_digits-medium">{amount}</p>
         <CurrencyIcon type="primary" className="mr-10" />

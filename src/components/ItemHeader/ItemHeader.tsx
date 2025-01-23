@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./ItemHeader.module.css";
 
 type Props = {
@@ -16,7 +17,7 @@ function ItemHeader(props: Props) {
         <p
           className={`ml-2 ${
             props.isActive
-              ? ""
+              ? "text text_type_main-small"
               : "text text_type_main-default text_color_inactive"
           }`}
         >

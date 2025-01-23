@@ -1,12 +1,18 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
+
+import { GETTING_INGREDIENT_DETAILS } from "../../services/actions/IngredientDetails";
+
 import { Type } from "../../utils/type.type";
 import { Ingredient } from "../../utils/ingredient.type";
-import { GETTING_INGREDIENT_DETAILS } from "../../services/actions/IngredientDetails";
-import BurgerIngredientsItem from "../BurgerIngredientsItem/BurgerIngredientsItem";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Routes as RouteName } from "../../utils/routes";
+
 import styles from "./BurgerIngredients.module.css";
 
 enum TabEnum {
@@ -16,16 +22,11 @@ enum TabEnum {
 }
 
 function BurgerIngredients() {
+  const location = useLocation();
+
   const ingredients = useSelector((state: unknown) => {
     return (state as { burgerIngredients: { ingredients: Ingredient[] } })
       .burgerIngredients.ingredients;
-  });
-
-  const ingredient = useSelector((state: unknown) => {
-    return (
-      (state as { ingredient: { ingredient: Ingredient | null } })?.ingredient
-        ?.ingredient || null
-    );
   });
 
   const cart = useSelector(
@@ -42,19 +43,13 @@ function BurgerIngredients() {
 
   const dispatch = useDispatch();
   const [current, setCurrent] = useState("one");
-  const [isModalOpen, setModalOpen] = useState(false);
 
   const onIngredientClick = (element: Ingredient) => {
     dispatch({
       type: GETTING_INGREDIENT_DETAILS,
       payload: element,
     });
-    setModalOpen(true);
   };
-
-  const close = useCallback(() => {
-    setModalOpen(false);
-  }, []);
 
   const bunRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
@@ -72,14 +67,7 @@ function BurgerIngredients() {
 
   return (
     <div className={`pt-10`}>
-      {ingredient && (
-        <Modal isOpen={isModalOpen} title="Детали ингредиента" onClick={close}>
-          <IngredientDetails />
-        </Modal>
-      )}
-
       <p className="text text_type_main-large pb-5">Соберите бургер</p>
-
       <div style={{ display: "flex" }} className="mb-10">
         <Tab
           value={TabEnum.One}
@@ -103,17 +91,19 @@ function BurgerIngredients() {
           Начинки
         </Tab>
       </div>
-
       {ingredients?.length ? (
         <div className={`${styles.scrollbar}`}>
           <section className={`mb-10 ${styles.wrapper}`} ref={bunRef}>
             <p className="text text_type_main-medium">Булки</p>
             <div className={styles.wrap}>
-              {ingredients?.map((element, index) =>
+              {ingredients?.map((element) =>
                 element.type === Type.Bun ? (
-                  <div
+                  <Link
                     key={element._id}
                     onClick={() => onIngredientClick(element)}
+                    to={`${RouteName.Ingredients}/${element._id}`}
+                    state={{ backgroundLocation: location }}
+                    className={styles.link}
                   >
                     <BurgerIngredientsItem
                       element={element}
@@ -125,22 +115,24 @@ function BurgerIngredients() {
                           : undefined
                       }
                     />
-                  </div>
+                  </Link>
                 ) : (
                   ""
                 )
               )}
             </div>
           </section>
-
           <section className={`${styles.wrapper} pt-10 pb-10`} ref={sauceRef}>
             <p className="text text_type_main-medium pb-6">Соусы</p>
             <div className={styles.wrap}>
               {ingredients?.map((element) =>
                 element?._id && element.type === Type.Sauce ? (
-                  <div
+                  <Link
                     key={element._id}
                     onClick={() => onIngredientClick(element)}
+                    to={`${RouteName.Ingredients}/${element._id}`}
+                    state={{ backgroundLocation: location }}
+                    className={styles.link}
                   >
                     <BurgerIngredientsItem
                       element={element}
@@ -150,22 +142,24 @@ function BurgerIngredients() {
                           : undefined
                       }
                     />
-                  </div>
+                  </Link>
                 ) : (
                   ""
                 )
               )}
             </div>
           </section>
-
           <section className={styles.wrapper} ref={mainRef}>
             <p className="text text_type_main-medium pb-6">Начинки</p>
             <div className={styles.wrap}>
               {ingredients?.map((element) =>
                 element.type === Type.Main ? (
-                  <div
+                  <Link
                     key={element._id}
                     onClick={() => onIngredientClick(element)}
+                    to={`${RouteName.Ingredients}/${element._id}`}
+                    state={{ backgroundLocation: location, element }}
+                    className={styles.link}
                   >
                     <BurgerIngredientsItem
                       element={element}
@@ -175,7 +169,7 @@ function BurgerIngredients() {
                           : undefined
                       }
                     />
-                  </div>
+                  </Link>
                 ) : (
                   ""
                 )
