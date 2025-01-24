@@ -29,6 +29,7 @@ import { checkUserAuthThunk } from "../../services/actions/Login";
 import { Ingredient } from "../../utils/ingredient.type";
 import { Type } from "../../utils/type.type";
 import { Order } from "../../utils/order.type";
+import { Routes as RouterName } from "../../utils/routes";
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -56,24 +57,21 @@ type BurgerConstructorSelector = {
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const useBurgerConstructorSelector =
     useSelector.withTypes<BurgerConstructorSelector>();
 
   const error = useBurgerConstructorSelector((state) => state?.error?.message);
-
   const ingredients = useBurgerConstructorSelector(
     (state) => state.burgerConstructor.burgerConstructor
   );
-
   const buns = useBurgerConstructorSelector(
     (state) => state.burgerConstructor.buns
   );
-
   const amount = useBurgerConstructorSelector(
     (state) => state.burgerConstructor.amount
   );
-
   const isAuth = useBurgerConstructorSelector((state) => state.user.isAuth);
 
   const [{ isOver }, drop] = useDrop({
@@ -111,11 +109,15 @@ function BurgerConstructor() {
     [ingredients, dispatch]
   );
 
-  const navigate = useNavigate();
   const [makingOrder, setMakingOrder] = useState<boolean>(false);
   const [oderDetails, setOrderDetails] = useState<boolean>(false);
 
   const showOrderDetails = () => {
+    if (!isAuth) {
+      navigate(RouterName.Login, { state: { from: RouterName.Ingredients } });
+      return;
+    }
+
     setMakingOrder(true);
     dispatch(checkUserAuthThunk() as unknown as UnknownAction);
   };

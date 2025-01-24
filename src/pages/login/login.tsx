@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { UnknownAction } from "redux";
 
@@ -13,24 +13,30 @@ import { Layout } from "../../components/Layout/Layout";
 import { fetchLoginThunk } from "../../services/actions/Login";
 import { UserLogin } from "../../utils/user-login.type";
 import { useForm } from "../../utils/use-form";
+import { Routes } from "../../utils/routes";
 
 import styles from "./login.module.css";
 
 export function LoginPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromPage = location.state?.from || Routes.Main;
 
   const [values, handleChange] = useForm<UserLogin>({
     email: "",
     password: "",
   });
 
-  const onAuth = (e: { preventDefault: () => void }) => {
+  const onAuth = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    dispatch(
-      fetchLoginThunk({
-        ...values,
-      }) as unknown as UnknownAction
+    const result = await dispatch(
+      fetchLoginThunk(values) as unknown as UnknownAction
     );
+
+    if (result.success) {
+      navigate(fromPage, { replace: true });
+    }
   };
 
   return (
@@ -61,7 +67,7 @@ export function LoginPage() {
           <p className="text text_type_main-default text_color_inactive">
             Вы - новый пользователь?
           </p>
-          <Link to="/register" className="text text_type_main-default">
+          <Link to={Routes.Register} className="text text_type_main-default">
             <p>Зарегистрироваться</p>
           </Link>
         </div>
@@ -69,7 +75,10 @@ export function LoginPage() {
           <p className="text text_type_main-default text_color_inactive">
             Забыли пароль?
           </p>
-          <Link to="/forgot-password" className="text text_type_main-default">
+          <Link
+            to={Routes.ForgotPassword}
+            className="text text_type_main-default"
+          >
             <p>Восстановить пароль</p>
           </Link>
         </div>

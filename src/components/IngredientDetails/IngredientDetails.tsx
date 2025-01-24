@@ -5,10 +5,15 @@ import MacronutrientComp from "../MacronutrientComp/MacronutrientComp";
 import styles from "./IngredientDetails.module.css";
 
 function IngredientDetails() {
-  const ingredient = useSelector((state) => {
-    return (state as { ingredient: { ingredient: Ingredient } }).ingredient
-      .ingredient;
-  });
+  const ingredient = useSelector(
+    (state) =>
+      (state as { ingredientDetails: { ingredient?: Ingredient } })
+        .ingredientDetails.ingredient ?? null
+  );
+
+  if (!ingredient) {
+    return <p>Ингредиент не найден</p>;
+  }
 
   const macro = [
     { value: ingredient.calories, name: `${MacronutrientType.Calories}, ккал` },

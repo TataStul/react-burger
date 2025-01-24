@@ -33,8 +33,7 @@ export const ProtectedRouteElement = (props: Props) => {
   }
 
   if (props.onlyUnAuth && user?.isAuth) {
-    const { from } = location.state || { from: { pathname: RouteName.Main } };
-    return <Navigate to={from} />;
+    return <Navigate to={RouteName.Login} state={{ from: location }} />;
   }
 
   if (!props.onlyUnAuth && !user?.isAuth) {
