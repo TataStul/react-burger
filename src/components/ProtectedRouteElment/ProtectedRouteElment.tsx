@@ -20,11 +20,9 @@ type ProtectedRouteSelector = {
 export const ProtectedRouteElement = (props: Props) => {
   const useProtectedRouteSelector =
     useSelector.withTypes<ProtectedRouteSelector>();
-
-  const isAuthChecked = useProtectedRouteSelector((state) => {
-    return state.login.checkingAuth;
-  });
-
+  const isAuthChecked = useProtectedRouteSelector(
+    (state) => state.login.checkingAuth
+  );
   const user = useProtectedRouteSelector((store) => store.user);
   const location = useLocation();
 
@@ -33,10 +31,12 @@ export const ProtectedRouteElement = (props: Props) => {
   }
 
   if (props.onlyUnAuth && user?.isAuth) {
-    return <Navigate to={RouteName.Login} state={{ from: location }} />;
+    // Если пользователь авторизован и хочет попасть на незащищенную страницу
+    return <Navigate to={RouteName.Main} state={{ from: location }} />;
   }
 
   if (!props.onlyUnAuth && !user?.isAuth) {
+    // Если пользователь не авторизован и пытается попасть на защищенную страницу
     return <Navigate to={RouteName.Login} state={{ from: location }} />;
   }
 

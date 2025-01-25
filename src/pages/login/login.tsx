@@ -34,8 +34,10 @@ export function LoginPage() {
       fetchLoginThunk(values) as unknown as UnknownAction
     );
 
-    if (result.success) {
-      navigate(fromPage, { replace: true });
+    if (result?.success) {
+      // Выполняем редирект на главную страницу
+      navigate(Routes.Main, { replace: true });
+    } else {
     }
   };
 

@@ -11,9 +11,14 @@ type Props = {
 
 function ItemHeader(props: Props) {
   return (
-    <div className={`p-2 ${styles.itemHeader}`}>
+    <div className={`p-2 ${styles.itemHeader}`} onClick={props.onClick}>
       {props.children}
-      <a href="#" className={`flex items-center ${styles.link}`}>
+      <div
+        className={`flex items-center ${styles.link}`}
+        role="button"
+        onClick={props.onClick}
+        tabIndex={0} // делает элемент доступным для клавиатуры
+      >
         <p
           className={`ml-2 ${
             props.isActive
@@ -23,7 +28,7 @@ function ItemHeader(props: Props) {
         >
           {props.title}
         </p>
-      </a>
+      </div>
     </div>
   );
 }
