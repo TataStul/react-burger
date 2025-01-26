@@ -111,6 +111,7 @@ function BurgerConstructor() {
 
   const [makingOrder, setMakingOrder] = useState<boolean>(false);
   const [oderDetails, setOrderDetails] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
 
   const showOrderDetails = () => {
     if (!isAuth) {
@@ -120,6 +121,9 @@ function BurgerConstructor() {
 
     setMakingOrder(true);
     dispatch(checkUserAuthThunk() as unknown as UnknownAction);
+
+    // Вызываем makeOrder напрямую при каждом нажатии
+    makeOrder();
   };
 
   const makeOrder = () => {
@@ -130,8 +134,12 @@ function BurgerConstructor() {
       orderDetails = [...ingredients.map((v) => v._id)];
     }
 
-    dispatch(fetchMakingOrderThunk(orderDetails) as unknown as UnknownAction);
+    if (!buns || ingredients.length === 0) {
+      setErrorModal(true); // Открываем модальное окно с ошибкой
+      return;
+    }
 
+    dispatch(fetchMakingOrderThunk(orderDetails) as unknown as UnknownAction);
     setOrderDetails(true);
   };
 
@@ -142,6 +150,12 @@ function BurgerConstructor() {
     });
     setMakingOrder(false);
   };
+
+  useEffect(() => {
+    if (makingOrder) {
+      makeOrder();
+    }
+  }, [makingOrder]);
 
   useEffect(() => {
     if (buns && Object.keys(buns).length) {
@@ -178,13 +192,28 @@ function BurgerConstructor() {
 
   return (
     <div className={`mt-25 ${styles.gridColumn}`} ref={drop}>
-      {error ? (
-        <h1>{error}</h1>
-      ) : (
-        <Modal isOpen={oderDetails} title="" onClick={close}>
-          <OrderDetails />
-        </Modal>
-      )}
+      {error && <h1>{error}</h1>}
+      <Modal isOpen={oderDetails} title="" onClick={close}>
+        <OrderDetails />
+      </Modal>
+
+      {/* Модальное окно ошибки */}
+      <Modal
+        isOpen={errorModal}
+        title="Ошибка"
+        onClick={() => setErrorModal(false)}
+      >
+        <p className="text text_type_main-medium mb-4">
+          Оформить заказ можно только с булками и ингредиентами
+        </p>
+        <Button
+          type="primary"
+          onClick={() => setErrorModal(false)}
+          htmlType={"button"}
+        >
+          Понятно
+        </Button>
+      </Modal>
       <section className={`mb-10 ${styles.grid}`}>
         {buns && Object.keys(buns).length ? (
           <BurgerConstructorItem
