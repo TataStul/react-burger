@@ -1,0 +1,30 @@
+.grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  background: #801ab3;
+  width: 50px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+
+  transform-origin: 50% 40%;
+  animation: l25 1s infinite linear;
+
+  -webkit-mask: radial-gradient(
+    circle closest-side at 50% 40%,
+    #0000 94%,
+    #000
+  );
+}
+
+@keyframes l25 {
+  100% {
+    transform: rotate(1turn);
+  }
+}

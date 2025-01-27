@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./ItemHeader.module.css";
 
 type Props = {
@@ -10,19 +11,24 @@ type Props = {
 
 function ItemHeader(props: Props) {
   return (
-    <div className={`p-2 ${styles.itemHeader}`}>
+    <div className={`p-2 ${styles.itemHeader}`} onClick={props.onClick}>
       {props.children}
-      <a href="#" className={`flex items-center ${styles.link}`}>
+      <div
+        className={`flex items-center ${styles.link}`}
+        role="button"
+        onClick={props.onClick}
+        tabIndex={0} // делает элемент доступным для клавиатуры
+      >
         <p
           className={`ml-2 ${
             props.isActive
-              ? ""
+              ? "text text_type_main-small"
               : "text text_type_main-default text_color_inactive"
           }`}
         >
           {props.title}
         </p>
-      </a>
+      </div>
     </div>
   );
 }
