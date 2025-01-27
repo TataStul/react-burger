@@ -2,26 +2,18 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./Modal.module.css";
 
+import { EventKey } from "../../utils/eventkey.type";
+import { Key } from "../../utils/key.enum";
+import { BrowserActions } from "../../utils/browser_actions.enum";
+
+import styles from "./Modal.module.css";
 type Props = {
   title: string;
   isOpen: boolean;
   onClick: () => void;
   children?: React.ReactNode;
 };
-
-enum Key {
-  Esc = "Escape",
-}
-
-type EventKey = {
-  key: string;
-};
-
-enum BrowserActions {
-  Keydown = "keydown",
-}
 
 const MODAL_OVERLAY_ID = "modal-overlay";
 

@@ -1,12 +1,9 @@
 import { LOADING } from "../actions/Loader";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   loading: true,
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const loaderReducer = (state = initialState, action: ActionType) => {

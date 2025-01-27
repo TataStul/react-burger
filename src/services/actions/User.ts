@@ -6,11 +6,7 @@ import { UserRegister } from "../../utils/user-register.type";
 import { UserResponse } from "../../utils/user-response.type";
 
 import { getUser, updateUser } from "../../utils/api/user.service";
-
-export type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 //---- user actions
 export const USER_GETTING = "USER_GETTING";

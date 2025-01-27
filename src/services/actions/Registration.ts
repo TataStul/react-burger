@@ -2,11 +2,7 @@ import { UserRegister } from "../../utils/user-register.type";
 
 import { registerUser } from "../../utils/api/auth.service";
 import { setCookie } from "../../utils/cookie-set";
-
-export type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 //---- register
 export const REGISTRATION = "REGISTRATION";

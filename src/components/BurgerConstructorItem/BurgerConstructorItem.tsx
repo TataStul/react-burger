@@ -1,9 +1,13 @@
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import { DndType } from "../../utils/dnd.enum";
+
 import styles from "./BurgerConstructorItem.module.css";
 
 type Props = {
@@ -16,11 +20,6 @@ type Props = {
   price: number;
   thumbnail: string;
 };
-
-enum DndType {
-  Ingredient = "ingredient",
-  NewIngredient = "new-ingredient",
-}
 
 function BurgerConstructorItem(props: Props) {
   const ref = useRef<HTMLDivElement>(null);

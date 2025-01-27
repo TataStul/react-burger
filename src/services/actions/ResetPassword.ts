@@ -1,11 +1,7 @@
 import { UserResetPassword } from "../../utils/user-reset-password.type";
 
 import { resetPassword } from "../../utils/api/data.service";
-
-export type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 //---- reset
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";

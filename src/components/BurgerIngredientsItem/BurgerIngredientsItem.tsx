@@ -4,17 +4,15 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import { DndType } from "../../utils/dnd.enum";
+
 import styles from "./BurgerIngredientsItem.module.css";
 
 type Props = {
   element: Ingredient;
   count?: number;
 };
-
-enum DndType {
-  NewIngredient = "new-ingredient",
-  Ingredient = "ingredient",
-}
 
 function BurgerIngredientsItem(props: Props) {
   const [{ isDragging }, drag] = useDrag(

@@ -4,15 +4,12 @@ import {
   RESETTING_PASSWORD,
 } from "../actions/ResetPassword";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   email: "",
   response: {},
   error: null,
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const resetPasswordReducer = (
