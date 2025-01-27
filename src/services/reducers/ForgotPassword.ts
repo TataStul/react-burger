@@ -4,15 +4,12 @@ import {
   FORGOT_PASSWORD_REJECTED,
 } from "../actions/ForgotPassword";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   error: null,
   response: {},
   email: "",
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const forgotPasswordReducer = (

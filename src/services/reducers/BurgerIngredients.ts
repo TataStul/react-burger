@@ -4,10 +4,7 @@ import {
   GETTING_REQUEST_INGREDIENTS,
 } from "../actions/BurgerIngredients";
 
-type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 const initialState = {
   ingredients: [],

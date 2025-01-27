@@ -8,11 +8,7 @@ import { UserResponse } from "../../utils/user-response.type";
 
 import { loginUser, logout, refreshToken } from "../../utils/api/auth.service";
 import { setCookie } from "../../utils/cookie-set";
-
-export type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 //---- auth
 export const CHECKING_AUTH = "CHECKING_AUTH";

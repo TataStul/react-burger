@@ -10,11 +10,9 @@ import { Layout } from "../../components/Layout/Layout";
 
 import { fetchIngredientsThunk } from "../../services/actions/BurgerIngredients";
 
-import styles from "./main.module.css";
+import { ErrorType } from "../../utils/error.type";
 
-export type ErrorType = {
-  message?: string;
-};
+import styles from "./main.module.css";
 
 export function MainPage() {
   const dispatch = useDispatch();

@@ -4,14 +4,11 @@ import {
   REGISTRATION_REJECTED,
 } from "../actions/Registration";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   response: {},
   error: null,
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const registrationReducer = (

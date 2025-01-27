@@ -8,6 +8,8 @@ import {
   LOGOUT_REJECTED,
 } from "../actions/Login";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   error: null,
   success: false,
@@ -19,11 +21,6 @@ const initialState = {
   accessToken: "",
   refreshToken: "",
   logout: null,
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const loginReducer = (state = initialState, action: ActionType) => {

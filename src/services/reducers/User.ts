@@ -1,15 +1,12 @@
 import { IS_USER_AUTH, USER_GETTING } from "../actions/User";
 
+import { ActionType } from "../../utils/action.type";
+
 const initialState = {
   name: "",
   email: "",
   password: "",
   isAuth: false,
-};
-
-export type ActionType = {
-  type: string;
-  payload?: any;
 };
 
 export const userReducer = (state = initialState, action: ActionType) => {
