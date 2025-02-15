@@ -30,17 +30,10 @@ import { Ingredient } from "../../utils/ingredient.type";
 import { Type } from "../../utils/type.type";
 import { Order } from "../../utils/order.type";
 import { Routes as RouterName } from "../../utils/routes";
+import { ErrorType } from "../../utils/error.type";
+import { DndType } from "../../utils/dnd.enum";
 
 import styles from "./BurgerConstructor.module.css";
-
-enum DndType {
-  Ingredient = "ingredient",
-  NewIngredient = "new-ingredient",
-}
-
-type ErrorType = {
-  message?: string;
-};
 
 type BurgerConstructorSelector = {
   burgerConstructor: {

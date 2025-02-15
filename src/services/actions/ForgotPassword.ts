@@ -1,9 +1,5 @@
+import { ActionType } from "../../utils/action.type";
 import { rememberPassword } from "../../utils/api/data.service";
-
-export type ActionType = {
-  type: string;
-  payload?: any;
-};
 
 export const SENDING_EMAIL = "SENDING_EMAIL";
 export const FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST";

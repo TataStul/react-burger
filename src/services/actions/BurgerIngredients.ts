@@ -1,9 +1,5 @@
+import { ActionType } from "../../utils/action.type";
 import { getData } from "../../utils/api/data.service";
-
-type ActionType = {
-  type: string;
-  payload?: any;
-};
 
 export const GETTING_INGREDIENTS = "GETTING_INGREDIENTS";
 export const GETTING_REQUEST_INGREDIENTS = "GETTING_REQUEST_INGREDIENTS";

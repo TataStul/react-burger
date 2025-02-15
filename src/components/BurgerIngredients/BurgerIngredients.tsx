@@ -12,14 +12,9 @@ import { GETTING_INGREDIENT_DETAILS } from "../../services/actions/IngredientDet
 import { Type } from "../../utils/type.type";
 import { Ingredient } from "../../utils/ingredient.type";
 import { Routes as RouteName } from "../../utils/routes";
+import { TabEnum } from "../../utils/tab.enum";
 
 import styles from "./BurgerIngredients.module.css";
-
-enum TabEnum {
-  One = "one",
-  Two = "two",
-  Three = "three",
-}
 
 function BurgerIngredients() {
   const location = useLocation();

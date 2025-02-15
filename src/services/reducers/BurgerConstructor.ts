@@ -11,10 +11,7 @@ import {
   RECALCULATING_AMOUNT,
 } from "../actions/BurgerConstructor";
 
-type ActionType = {
-  type: string;
-  payload?: any;
-};
+import { ActionType } from "../../utils/action.type";
 
 const initialState = {
   burgerConstructor: [],

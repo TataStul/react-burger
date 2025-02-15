@@ -1,9 +1,5 @@
+import { ActionType } from "../../utils/action.type";
 import { makeOrder } from "../../utils/api/data.service";
-
-type ActionType = {
-  type: string;
-  payload?: any;
-};
 
 export const ADDING_INGREDIENT = "ADDING_INGREDIENT";
 export const MOVING_INGREDIENT = "MOVING_INGREDIENT";
