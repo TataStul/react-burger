@@ -1,0 +1,15 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.parent {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.children {
+  width: 50%;
+}
