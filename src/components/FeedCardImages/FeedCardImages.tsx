@@ -1,6 +1,4 @@
 import { Fragment } from "react";
-import { v4 } from "uuid";
-
 import { FeedCardImage } from "../FeedCardImage/FeedCardImage";
 
 import { Ingredient } from "../../utils/ingredient.type";
@@ -26,20 +24,22 @@ export function FeedCardImages({ ingredients }: FeedCardImagesProps) {
     <div>
       {images.length <= 5
         ? images.map((image, index) => (
-            <FeedCardImage key={v4()} image={image} index={index} />
+            <FeedCardImage
+              key={`${ingredients[index]}-${index}`}
+              image={image}
+              index={index}
+            />
           ))
         : images.slice(0, 6).map((image, index) => (
-            <Fragment key={v4()}>
+            <Fragment key={`${ingredients[index]}-${index}`}>
               <FeedCardImage image={image} index={index} />
               {index >= 5 ? (
                 <p
                   className={`text text_type_digits-default ${styles.moreImageText}`}
                 >
-                  +{images.filter((_, index) => index >= 5).length}
+                  +{images.filter((_, idx) => idx >= 5).length}
                 </p>
-              ) : (
-                ""
-              )}
+              ) : null}
             </Fragment>
           ))}
     </div>
