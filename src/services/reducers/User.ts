@@ -1,28 +1,39 @@
-import { IS_USER_AUTH, USER_GETTING } from "../actions/User";
+import { IS_USER_AUTH, USER_GETTING } from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { TUserActions } from "../actions/User";
+import { TLoginActions } from "../actions/Login";
 
-const initialState = {
+type TUserState = {
+  name?: string;
+  email: string;
+  password: string;
+  isAuth: boolean;
+};
+
+const initialState: TUserState = {
   name: "",
   email: "",
   password: "",
   isAuth: false,
 };
 
-export const userReducer = (state = initialState, action: ActionType) => {
+export const userReducer = (
+  state = initialState,
+  action: TUserActions | TLoginActions
+): TUserState => {
   switch (action.type) {
     case USER_GETTING: {
       return {
         ...state,
-        name: action.payload?.name,
-        email: action.payload?.email,
-        password: action.payload?.password,
+        name: action.user?.name,
+        email: action.user?.email,
+        password: action.user?.password,
       };
     }
     case IS_USER_AUTH: {
       return {
         ...state,
-        isAuth: action.payload,
+        isAuth: action?.isAuth,
       };
     }
     default: {

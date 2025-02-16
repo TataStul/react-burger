@@ -1,39 +1,45 @@
 import {
-  SENDING_EMAIL,
-  FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_REJECTED,
-} from "../actions/ForgotPassword";
+  FORGOT_PASSWORD_REQUEST,
+  SENDING_EMAIL,
+} from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { TForgotPasswordActions } from "../actions/ForgotPassword";
+import { UserResponse } from "../../utils/user-response.type";
 
-const initialState = {
+type TForgotPasswordState = {
+  error: unknown;
+  email: string;
+  response?: UserResponse;
+};
+
+const initialState: TForgotPasswordState = {
   error: null,
-  response: {},
   email: "",
 };
 
 export const forgotPasswordReducer = (
   state = initialState,
-  action: ActionType
-) => {
+  action: TForgotPasswordActions
+): TForgotPasswordState => {
   switch (action.type) {
-    case SENDING_EMAIL: {
+    case FORGOT_PASSWORD_REJECTED: {
       return {
         ...state,
-        response: action.payload,
+        error: action?.error,
       };
     }
     case FORGOT_PASSWORD_REQUEST: {
       return {
         ...state,
         error: null,
-        email: action.payload,
+        email: action?.email,
       };
     }
-    case FORGOT_PASSWORD_REJECTED: {
+    case SENDING_EMAIL: {
       return {
         ...state,
-        error: action.payload.error,
+        response: action?.response,
       };
     }
     default: {

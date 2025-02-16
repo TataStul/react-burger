@@ -1,22 +1,32 @@
-import { useSelector } from "react-redux";
-import { Order } from "../../utils/order.type";
 import imgDone from "../../images/done.svg";
+
+import { Loader } from "../Loader/Loader";
+
+import { useSelector } from "../../utils/store-hooks";
+
 import styles from "./OrderDetails.module.css";
 
 function OrderDetails() {
-  const order = useSelector(
-    (state: { burgerConstructor: { order: Order } }) => {
-      return state.burgerConstructor.order;
-    }
-  );
+  const order = useSelector((state) => state.burgerConstructor.order);
+  const loading = useSelector((state) => state.burgerConstructor.loading);
 
   return (
-    <>
-      {Object.keys(order).length && (
-        <div className={`${styles.grid} pt-8`}>
-          <p className={`text text_type_digits-large ${styles.glow} pb-8`}>
-            034536
-          </p>
+    <div className={`${styles.grid} pt-8`}>
+      {loading ? (
+        <div className={`${styles.loaderGrid} pb-30`}>
+          <Loader />
+        </div>
+      ) : (
+        <>
+          {order?.order?.number ? (
+            <p className={`text text_type_digits-large ${styles.glow} pb-8`}>
+              {order.order.number}
+            </p>
+          ) : (
+            <p className="text text_type_main-medium pb-8">
+              Заказ обрабатывается...
+            </p>
+          )}
           <p className="text text_type_main-medium pb-15">
             идентификатор заказа
           </p>
@@ -25,9 +35,9 @@ function OrderDetails() {
           <p className="text text_type_main-default text_color_inactive">
             Дождитесь готовности на орбитальной станции
           </p>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 

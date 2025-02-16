@@ -1,6 +1,5 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { UnknownAction } from "redux";
+import React, { FormEvent } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -14,31 +13,23 @@ import { fetchLoginThunk } from "../../services/actions/Login";
 import { UserLogin } from "../../utils/user-login.type";
 import { useForm } from "../../utils/use-form";
 import { Routes } from "../../utils/routes";
+import { useDispatch } from "../../utils/store-hooks";
 
 import styles from "./login.module.css";
 
 export function LoginPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const fromPage = location.state?.from || Routes.Main;
-
   const [values, handleChange] = useForm<UserLogin>({
     email: "",
     password: "",
   });
-
-  const onAuth = async (e: { preventDefault: () => void }) => {
+  const onAuth = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await dispatch(
-      fetchLoginThunk(values) as unknown as UnknownAction
+    dispatch(
+      fetchLoginThunk({
+        ...values,
+      })
     );
-
-    if (result?.success) {
-      // Выполняем редирект на главную страницу
-      navigate(Routes.Main, { replace: true });
-    } else {
-    }
   };
 
   return (

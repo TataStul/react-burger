@@ -1,1 +1,1 @@
-export const GETTING_ORDER_DETAILS = "GETTING_ORDER_DETAILS";
+export const c = "";

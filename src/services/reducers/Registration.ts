@@ -2,24 +2,29 @@ import {
   REGISTRATION,
   REGISTRATION_REQUEST,
   REGISTRATION_REJECTED,
-} from "../actions/Registration";
+} from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { UserResponse } from "../../utils/user-response.type";
+import { TRegistrationActions } from "../actions/Registration";
+
+type TRegistrationState = {
+  response?: UserResponse;
+  error: unknown;
+};
 
 const initialState = {
-  response: {},
   error: null,
 };
 
 export const registrationReducer = (
   state = initialState,
-  action: ActionType
-) => {
+  action: TRegistrationActions
+): TRegistrationState => {
   switch (action.type) {
     case REGISTRATION: {
       return {
         ...state,
-        response: action.payload,
+        response: action?.response,
       };
     }
     case REGISTRATION_REQUEST: {
@@ -31,7 +36,7 @@ export const registrationReducer = (
     case REGISTRATION_REJECTED: {
       return {
         ...state,
-        error: action.payload?.error,
+        error: action?.error,
       };
     }
     default: {

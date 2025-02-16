@@ -1,25 +1,59 @@
-import { UserRegister } from "../../utils/user-register.type";
+import {
+  REGISTRATION,
+  REGISTRATION_REJECTED,
+  REGISTRATION_REQUEST,
+} from "../constants";
 
 import { registerUser } from "../../utils/api/auth.service";
 import { setCookie } from "../../utils/cookie-set";
-import { ActionType } from "../../utils/action.type";
+import { UserRegister } from "../../utils/user-register.type";
+import { UserResponse } from "../../utils/user-response.type";
+import { AppDispatch, AppThunkAction } from "../types";
 
-//---- register
-export const REGISTRATION = "REGISTRATION";
-export const REGISTRATION_REQUEST = "REGISTRATION_REQUEST";
-export const REGISTRATION_REJECTED = "REGISTRATION_REJECTED";
+// interfaces
+export interface IGetRegistration {
+  readonly type: typeof REGISTRATION;
+  response: UserResponse;
+}
+export interface IRegistrationRejected {
+  readonly type: typeof REGISTRATION_REJECTED;
+  error: unknown;
+}
+export interface IRegistrationRequest {
+  readonly type: typeof REGISTRATION_REQUEST;
+}
 
-export const fetchRegisterThunk =
-  (credits: UserRegister) => async (dispatch: (action: ActionType) => void) => {
-    dispatch({ type: REGISTRATION_REQUEST });
+export type TRegistrationActions =
+  | IGetRegistration
+  | IRegistrationRejected
+  | IRegistrationRequest;
+
+export const fetchRegisterThunk: AppThunkAction =
+  (credits: UserRegister) => async (dispatch: AppDispatch) => {
+    dispatch(makeRegistrationRequest());
 
     try {
       await registerUser(credits).then((response) => {
         setCookie("accessToken", response.accessToken!);
         localStorage.setItem("refreshToken", response.refreshToken);
-        dispatch({ type: REGISTRATION, payload: response });
+        dispatch(makeRegistration(response));
       });
     } catch (e) {
-      dispatch({ type: REGISTRATION_REJECTED });
+      dispatch(catchRegistrationRejected(e));
     }
   };
+
+// consts
+export const makeRegistration = (response: UserResponse) => ({
+  type: REGISTRATION,
+  response,
+});
+export const catchRegistrationRejected = (
+  error: unknown
+): IRegistrationRejected => ({
+  type: REGISTRATION_REJECTED,
+  error,
+});
+export const makeRegistrationRequest = (): IRegistrationRequest => ({
+  type: REGISTRATION_REQUEST,
+});

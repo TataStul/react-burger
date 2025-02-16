@@ -1,29 +1,54 @@
-import { ActionType } from "../../utils/action.type";
+import {
+  GETTING_INGREDIENTS,
+  GETTING_REJECTED_INGREDIENTS,
+  GETTING_REQUEST_INGREDIENTS,
+} from "../constants";
+
+import { Ingredient } from "../../utils/ingredient.type";
 import { getData } from "../../utils/api/data.service";
+import { AppDispatch, AppThunkAction } from "../types";
 
-export const GETTING_INGREDIENTS = "GETTING_INGREDIENTS";
-export const GETTING_REQUEST_INGREDIENTS = "GETTING_REQUEST_INGREDIENTS";
-export const GETTING_REJECTED_INGREDIENTS = "GETTING_REJECTED_INGREDIENTS";
+// interfaces
+export interface IGetIngredients {
+  readonly type: typeof GETTING_INGREDIENTS;
+  ingredients: Ingredient[];
+}
+export interface IRejectedOfIngredientGetting {
+  readonly type: typeof GETTING_REJECTED_INGREDIENTS;
+  error: unknown;
+}
+export interface IRequestOfIngredientGetting {
+  readonly type: typeof GETTING_REQUEST_INGREDIENTS;
+}
+export type TBurgerIngredientsActions =
+  | IGetIngredients
+  | IRejectedOfIngredientGetting
+  | IRequestOfIngredientGetting;
 
-export const fetchIngredientsThunk =
-  () => async (dispatch: (action: ActionType) => void) => {
-    dispatch({ type: GETTING_REQUEST_INGREDIENTS });
+export const fetchIngredientsThunk: AppThunkAction =
+  () => async (dispatch: AppDispatch) => {
+    dispatch(makeRequestOfIngredients());
 
     try {
-      const data = await getData();
-      dispatch({
-        type: GETTING_INGREDIENTS,
-        payload: data,
-      });
+      await getData().then((ingredients) =>
+        dispatch(getIngredients(ingredients.data))
+      );
     } catch (e) {
-      dispatch({ type: GETTING_REJECTED_INGREDIENTS, payload: e });
+      dispatch(getErrorOfIngredients(e));
     }
   };
 
-//для быстрой вставки
-// import {
-//   GETTING_INGREDIENTS,
-//   GETTING_REQUEST_INGREDIENTS,
-//   GETTING_REJECTED_INGREDIENTS,
-//   fetchIngredientsThunk
-// } from "../../services/actions/BurgerIngredients";
+// consts
+export const getIngredients = (ingredients: Ingredient[]): IGetIngredients => ({
+  type: GETTING_INGREDIENTS,
+  ingredients,
+});
+export const getErrorOfIngredients = (
+  error: unknown
+): IRejectedOfIngredientGetting => ({
+  type: GETTING_REJECTED_INGREDIENTS,
+  error,
+});
+export const makeRequestOfIngredients = (): IRequestOfIngredientGetting => ({
+  type: GETTING_REQUEST_INGREDIENTS,
+});

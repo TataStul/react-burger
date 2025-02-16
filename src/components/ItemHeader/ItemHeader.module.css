@@ -1,11 +1,14 @@
+.itemHeader,
+.link {
+  align-items: center;
+}
+
 .itemHeader {
   display: flex;
-  align-items: center;
 }
 
 .link {
   display: inline-flex;
-  align-items: center;
   text-decoration: none;
-  color: inherit;
+  color: rgb(76, 76, 255);
 }
