@@ -4,8 +4,6 @@ import {
   RESETTING_PASSWORD,
 } from "../constants";
 
-// import { ActionType } from "../../utils/action.type";
-
 import { UserResponse } from "../..//utils/user-response.type";
 import { TResetPasswordAction } from "../actions/ResetPassword";
 
@@ -15,13 +13,13 @@ type TResetPasswordState = {
   response?: UserResponse;
 };
 
-const initialState = {
+export const initialStateOfResetPassword: TResetPasswordState = {
   email: "",
   error: null,
 };
 
 export const resetPasswordReducer = (
-  state = initialState,
+  state = initialStateOfResetPassword,
   action: TResetPasswordAction
 ): TResetPasswordState => {
   switch (action.type) {

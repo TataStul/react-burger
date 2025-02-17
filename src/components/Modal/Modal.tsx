@@ -31,6 +31,7 @@ function Modal(props: Props) {
     return () => {
       window.removeEventListener(BrowserActions.Keydown, closeOnEsc);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

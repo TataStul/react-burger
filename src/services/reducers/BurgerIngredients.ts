@@ -12,13 +12,13 @@ type TBurgerIngredientsState = {
   error: unknown;
 };
 
-const initialState: TBurgerIngredientsState = {
+export const initialStateOfBurgerIngredients: TBurgerIngredientsState = {
   ingredients: [],
   error: null,
 };
 
 export const burgerIngredientsReducer = (
-  state = initialState,
+  state = initialStateOfBurgerIngredients,
   action: TBurgerIngredientsActions
 ): TBurgerIngredientsState => {
   switch (action.type) {

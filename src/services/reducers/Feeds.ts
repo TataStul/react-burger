@@ -7,13 +7,13 @@ type TFeedState = {
   error: unknown;
 };
 
-const initialState: TFeedState = {
+export const initialStateOfFeeds: TFeedState = {
   feeds: undefined,
   error: null,
 };
 
 export const feedsReducer = (
-  state = initialState,
+  state = initialStateOfFeeds,
   action: TFeedActions
 ): TFeedState => {
   switch (action.type) {

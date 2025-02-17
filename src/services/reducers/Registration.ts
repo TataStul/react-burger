@@ -12,12 +12,10 @@ type TRegistrationState = {
   error: unknown;
 };
 
-const initialState = {
-  error: null,
-};
+export const initialStateOfRegistration: TRegistrationState = { error: null };
 
 export const registrationReducer = (
-  state = initialState,
+  state = initialStateOfRegistration,
   action: TRegistrationActions
 ): TRegistrationState => {
   switch (action.type) {

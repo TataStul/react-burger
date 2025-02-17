@@ -7,12 +7,12 @@ type TIngredientDetailsState = {
   ingredient?: Ingredient;
 };
 
-const initialState: TIngredientDetailsState = {
+export const initialStateOfIngredientDetails: TIngredientDetailsState = {
   ingredient: undefined,
 };
 
 export const ingredientDetailsReducer = (
-  state = initialState,
+  state = initialStateOfIngredientDetails,
   action: ActionType
 ): TIngredientDetailsState => {
   switch (action.type) {

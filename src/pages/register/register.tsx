@@ -40,6 +40,7 @@ export function RegisterPage() {
     if (registration?.response?.success) {
       navigate(RouteName.Login);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registration]);
 
   return (

@@ -25,7 +25,7 @@ type TBurgerConstructorState = {
   ingredient?: Ingredient;
 };
 
-const initialState: TBurgerConstructorState = {
+export const initialStateOfBurgerConstructor: TBurgerConstructorState = {
   burgerConstructor: [],
   amount: 0,
   error: null,
@@ -33,7 +33,7 @@ const initialState: TBurgerConstructorState = {
 };
 
 export const burgerConstructorReducer = (
-  state = initialState,
+  state = initialStateOfBurgerConstructor,
   action: TBurgerConstructorActions
 ): TBurgerConstructorState => {
   switch (action.type) {
