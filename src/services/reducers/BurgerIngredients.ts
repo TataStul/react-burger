@@ -2,30 +2,36 @@ import {
   GETTING_INGREDIENTS,
   GETTING_REJECTED_INGREDIENTS,
   GETTING_REQUEST_INGREDIENTS,
-} from "../actions/BurgerIngredients";
+} from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { Ingredient } from "../../utils/ingredient.type";
+import { TBurgerIngredientsActions } from "../actions/BurgerIngredients";
 
-const initialState = {
+type TBurgerIngredientsState = {
+  ingredients?: Ingredient[];
+  error: unknown;
+};
+
+const initialState: TBurgerIngredientsState = {
   ingredients: [],
   error: null,
 };
 
 export const burgerIngredientsReducer = (
   state = initialState,
-  action: ActionType
-) => {
+  action: TBurgerIngredientsActions
+): TBurgerIngredientsState => {
   switch (action.type) {
     case GETTING_INGREDIENTS: {
       return {
         ...state,
-        ingredients: action.payload.data,
+        ingredients: action?.ingredients,
       };
     }
     case GETTING_REJECTED_INGREDIENTS: {
       return {
         ...state,
-        error: action.payload.error,
+        error: action?.error,
       };
     }
     case GETTING_REQUEST_INGREDIENTS: {

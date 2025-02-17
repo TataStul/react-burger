@@ -1,0 +1,14 @@
+.image {
+  width: 64px;
+  height: 64px;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 100px;
+  object-fit: cover;
+  background: linear-gradient(#131316, #131316) padding-box,
+    linear-gradient(to right, #801ab2, #4c4cff) border-box;
+}
+
+.image:nth-child(6) {
+  opacity: 60%;
+}

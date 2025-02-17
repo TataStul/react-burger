@@ -1,18 +1,10 @@
-import { Reducer } from "react";
 import ReactDOM from "react-dom/client";
-import { applyMiddleware, createStore } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { thunk } from "redux-thunk";
-import App from "./components/App/App";
-import { rootReducer } from "./services/reducers";
 import reportWebVitals from "./reportWebVitals";
+import App from "./components/App/App";
+import store from "./services/store";
 import "./index.css";
-
-const store = createStore(
-  rootReducer as Reducer<unknown, unknown>,
-  applyMiddleware(thunk)
-);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

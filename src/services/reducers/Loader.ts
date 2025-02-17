@@ -1,17 +1,24 @@
-import { LOADING } from "../actions/Loader";
+import { LOADING } from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { TLoginActions } from "../actions/Login";
 
-const initialState = {
+type TLoaderState = {
+  loading?: boolean;
+};
+
+const initialState: TLoaderState = {
   loading: true,
 };
 
-export const loaderReducer = (state = initialState, action: ActionType) => {
+export const loaderReducer = (
+  state = initialState,
+  action: TLoginActions
+): TLoaderState => {
   switch (action.type) {
     case LOADING: {
       return {
         ...state,
-        loading: action.payload,
+        loading: action?.loading,
       };
     }
     default: {

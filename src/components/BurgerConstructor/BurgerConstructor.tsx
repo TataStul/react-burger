@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
-import { UnknownAction } from "redux";
 import { v4 as uuid4 } from "uuid";
 
 import {
@@ -15,71 +13,47 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 
 import {
-  ADDING_INGREDIENT,
-  MOVING_INGREDIENT,
-  REMOVING_INGREDIENT,
-  GETTING_BURGER_CONSTRUCTOR,
-  ADDING_BUN,
-  RECALCULATING_AMOUNT,
-  CLEARING_ORDER,
+  addIngredient,
+  removeIngredientAction,
+  moveIngredientAction,
+  getOfBurgerConstructorAction,
+  addBun,
+  recalculateAmountAction,
+  clearOrderAction,
   fetchMakingOrderThunk,
 } from "../../services/actions/BurgerConstructor";
 import { checkUserAuthThunk } from "../../services/actions/Login";
-
 import { Ingredient } from "../../utils/ingredient.type";
 import { Type } from "../../utils/type.type";
-import { Order } from "../../utils/order.type";
 import { Routes as RouterName } from "../../utils/routes";
-import { ErrorType } from "../../utils/error.type";
 import { DndType } from "../../utils/dnd.enum";
+import { useDispatch, useSelector } from "../../utils/store-hooks";
 
 import styles from "./BurgerConstructor.module.css";
-
-type BurgerConstructorSelector = {
-  burgerConstructor: {
-    burgerConstructor: Ingredient[];
-    buns: Ingredient | null;
-    amount: number;
-    order: Order;
-  };
-  user: {
-    isAuth: boolean;
-  };
-  error?: ErrorType;
-};
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const useBurgerConstructorSelector =
-    useSelector.withTypes<BurgerConstructorSelector>();
-
-  const error = useBurgerConstructorSelector((state) => state?.error?.message);
-  const ingredients = useBurgerConstructorSelector(
+  const error = useSelector((state) => state?.error?.message);
+  const ingredients = useSelector(
     (state) => state.burgerConstructor.burgerConstructor
   );
-  const buns = useBurgerConstructorSelector(
-    (state) => state.burgerConstructor.buns
-  );
-  const amount = useBurgerConstructorSelector(
-    (state) => state.burgerConstructor.amount
-  );
-  const isAuth = useBurgerConstructorSelector((state) => state.user.isAuth);
+  const buns = useSelector((state) => state.burgerConstructor.buns);
+  const amount = useSelector((state) => state.burgerConstructor.amount);
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const [{ isOver }, drop] = useDrop({
     accept: DndType.NewIngredient,
     drop: (ingredient: Ingredient) => {
       if (ingredient.type === Type.Bun) {
-        dispatch({
-          type: ADDING_BUN,
-          payload: ingredient,
-        });
+        dispatch(addBun(ingredient));
       } else {
-        dispatch({
-          type: ADDING_INGREDIENT,
-          payload: { ...ingredient, uniqueId: uuid4() },
-        });
+        dispatch(
+          addIngredient({
+            ...ingredient,
+            uniqueId: uuid4(),
+          })
+        );
       }
     },
     collect: (monitor) => ({
@@ -93,120 +67,94 @@ function BurgerConstructor() {
       const updatedIngredients = [...ingredients];
       updatedIngredients.splice(dragIndex, 1);
       updatedIngredients.splice(hoverIndex, 0, dragItem);
-
-      dispatch({
-        type: MOVING_INGREDIENT,
-        payload: updatedIngredients.filter((v) => v !== undefined),
-      });
+      dispatch(
+        moveIngredientAction(updatedIngredients.filter((v) => v !== undefined))
+      );
     },
     [ingredients, dispatch]
   );
 
   const [makingOrder, setMakingOrder] = useState<boolean>(false);
   const [oderDetails, setOrderDetails] = useState<boolean>(false);
-  const [errorModal, setErrorModal] = useState<boolean>(false);
+  const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
 
   const showOrderDetails = () => {
-    if (!isAuth) {
-      navigate(RouterName.Login, { state: { from: RouterName.Ingredients } });
-      return;
-    }
-
     setMakingOrder(true);
-    dispatch(checkUserAuthThunk() as unknown as UnknownAction);
-
-    // Вызываем makeOrder напрямую при каждом нажатии
-    makeOrder();
+    dispatch(checkUserAuthThunk());
   };
 
   const makeOrder = () => {
     let orderDetails = [];
     if (buns) {
-      orderDetails = [...ingredients.map((v) => v._id), buns?._id, buns?._id];
+      orderDetails = [
+        ...ingredients.map((v: { _id: string }) => v._id),
+        buns?._id,
+        buns?._id,
+      ];
     } else {
-      orderDetails = [...ingredients.map((v) => v._id)];
+      orderDetails = [...ingredients.map((v: { _id: string }) => v._id)];
     }
-
-    if (!buns || ingredients.length === 0) {
-      setErrorModal(true); // Открываем модальное окно с ошибкой
-      return;
-    }
-
-    dispatch(fetchMakingOrderThunk(orderDetails) as unknown as UnknownAction);
+    dispatch(fetchMakingOrderThunk(orderDetails));
     setOrderDetails(true);
   };
 
   const close = () => {
     setOrderDetails(false);
-    dispatch({
-      type: CLEARING_ORDER,
-    });
+    dispatch(clearOrderAction());
     setMakingOrder(false);
+    setIsCartEmpty(true);
+  };
+
+  useEffect(() => {
+    recalculateAmount();
+  }, [ingredients, buns]);
+
+  const recalculateAmount = () => {
+    let totalAmount = 0;
+    if (buns && Object.keys(buns).length) {
+      setIsCartEmpty(false);
+      totalAmount = ingredients.reduce(
+        (sum: number, ingredient: Ingredient) => sum + ingredient?.price,
+        buns?.price * 2
+      );
+    } else if (ingredients.length) {
+      totalAmount = ingredients.reduce(
+        (sum: number, ingredient: Ingredient) => sum + ingredient?.price,
+        0
+      );
+    }
+    dispatch(recalculateAmountAction(totalAmount));
+  };
+
+  const onRemove = (uniqueId: string) => {
+    dispatch(
+      removeIngredientAction(
+        ingredients.filter((v: Ingredient) => v && v.uniqueId !== uniqueId)
+      )
+    );
+    dispatch(getOfBurgerConstructorAction());
   };
 
   useEffect(() => {
     if (makingOrder) {
-      makeOrder();
+      if (isAuth) {
+        makeOrder();
+      } else {
+        navigate(RouterName.Login, { replace: true });
+      }
     }
-  }, [makingOrder]);
-
-  useEffect(() => {
-    if (buns && Object.keys(buns).length) {
-      const totalAmount = ingredients.reduce(
-        (sum, ingredient) => sum + ingredient?.price,
-        buns?.price * 2
-      );
-      dispatch({
-        type: RECALCULATING_AMOUNT,
-        payload: totalAmount,
-      });
-    } else if (ingredients.length) {
-      const totalAmount = ingredients.reduce(
-        (sum, ingredient) => sum + ingredient?.price,
-        0
-      );
-      dispatch({
-        type: RECALCULATING_AMOUNT,
-        payload: totalAmount,
-      });
-    }
-  }, [ingredients, buns]);
-
-  const onRemove = (uniqueId: string) => {
-    dispatch({
-      type: REMOVING_INGREDIENT,
-      payload: ingredients.filter((v) => v && v.uniqueId !== uniqueId),
-    });
-
-    dispatch({
-      type: GETTING_BURGER_CONSTRUCTOR,
-    });
-  };
+  }, [isAuth, makingOrder]);
 
   return (
     <div className={`mt-25 ${styles.gridColumn}`} ref={drop}>
-      {error && <h1>{error}</h1>}
-      <Modal isOpen={oderDetails} title="" onClick={close}>
-        <OrderDetails />
-      </Modal>
+      {error ? (
+        <h1>{error}</h1>
+      ) : (
+        <Modal isOpen={oderDetails} title="" onClick={close}>
+          <OrderDetails />
+        </Modal>
+      )}
 
-      {/* Модальное окно ошибки */}
-      <Modal
-        isOpen={errorModal}
-        title="Ошибка"
-        onClick={() => setErrorModal(false)}
-      >
-        <p className="text text_type_main-medium mb-4">
-          Оформить заказ можно только с булками и ингредиентами
-        </p>
-        <Button
-          type="primary"
-          onClick={() => setErrorModal(false)}
-          htmlType={"button"}
-        >
-          Понятно
-        </Button>
-      </Modal>
       <section className={`mb-10 ${styles.grid}`}>
         {buns && Object.keys(buns).length ? (
           <BurgerConstructorItem
@@ -219,10 +167,11 @@ function BurgerConstructor() {
         ) : (
           ""
         )}
+
         {ingredients.length ? (
           <div className={`${styles.scrollbar} ${styles.elementsGrid}`}>
             {ingredients.map(
-              (ingredient, index) =>
+              (ingredient: Ingredient, index?: number) =>
                 ingredient?._id && (
                   <BurgerConstructorItem
                     key={ingredient.uniqueId}
@@ -252,6 +201,7 @@ function BurgerConstructor() {
           ""
         )}
       </section>
+
       {!ingredients.length && !buns?._id && (
         <section className={`mb-10 ${styles.noElementsGrid}`}>
           <div className={`pt-25 pb-25 ${styles.noElementsGridTitle}`}>
@@ -262,6 +212,7 @@ function BurgerConstructor() {
           </div>
         </section>
       )}
+
       <section className={styles.buttonGrid}>
         <p className="text text_type_digits-medium">{amount}</p>
         <CurrencyIcon type="primary" className="mr-10" />
@@ -270,6 +221,7 @@ function BurgerConstructor() {
           type="primary"
           size="medium"
           onClick={showOrderDetails}
+          disabled={isCartEmpty}
         >
           Оформить заказ
         </Button>

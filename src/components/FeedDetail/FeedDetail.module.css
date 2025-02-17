@@ -1,0 +1,39 @@
+.row,
+.amount,
+.scrollbar,
+.grid {
+  display: flex;
+}
+
+.row {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.amount {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.scrollbar {
+  flex-direction: column;
+  height: auto;
+  max-height: calc(100vh - 80vh);
+  gap: 16px;
+  overflow: auto;
+}
+
+.grid {
+  justify-content: center;
+}
+
+.gridCard {
+  min-height: 620px;
+  min-width: 640px;
+  max-height: 620px;
+  max-width: 640px;
+}
+
+.statusText {
+  color: #00cccc;
+}

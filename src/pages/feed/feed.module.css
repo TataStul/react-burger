@@ -1,0 +1,35 @@
+.row,
+.feedGrid {
+  display: flex;
+}
+
+.col {
+  width: 50%;
+}
+
+.feedGrid {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.orderNumberText {
+  color: #08d8d8;
+}
+
+.scroll {
+  max-height: calc(100vh - 25vh);
+  overflow: auto;
+  height: auto;
+}
+
+.scrollReady {
+  max-height: calc(100vh - 75vh);
+  overflow: auto;
+  height: auto;
+}
+
+.link {
+  min-width: 40%;
+  text-decoration: none;
+  color: white;
+}

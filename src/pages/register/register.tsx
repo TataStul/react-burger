@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { UnknownAction } from "redux";
 
 import {
   Button,
@@ -13,16 +11,12 @@ import {
 import { Layout } from "../../components/Layout/Layout";
 
 import { fetchRegisterThunk } from "../../services/actions/Registration";
-import { ResponseState } from "../../utils/store-response.type";
 import { UserRegister } from "../../utils/user-register.type";
 import { useForm } from "../../utils/use-form";
 import { Routes as RouteName } from "../../utils/routes";
+import { useDispatch, useSelector } from "../../utils/store-hooks";
 
 import styles from "./register.module.css";
-
-type RegisterPageSelector = {
-  registration: ResponseState;
-};
 
 export function RegisterPage() {
   const [values, handleChange] = useForm<Required<UserRegister>>({
@@ -30,26 +24,20 @@ export function RegisterPage() {
     email: "",
     password: "",
   });
-
   const dispatch = useDispatch();
-  const useRegisterPageSelector = useSelector.withTypes<RegisterPageSelector>();
   const navigate = useNavigate();
-
-  const registration = useRegisterPageSelector((state) => {
-    return state.registration.response;
-  });
-
+  const registration = useSelector((state) => state.registration);
   const registerUser = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     dispatch(
       fetchRegisterThunk({
         ...values,
-      }) as unknown as UnknownAction
+      })
     );
   };
 
   useEffect(() => {
-    if (registration.success) {
+    if (registration?.response?.success) {
       navigate(RouteName.Login);
     }
   }, [registration]);

@@ -7,6 +7,7 @@ import { NotFoundPage } from "./not_found/not_found";
 import { ProfilePage } from "./profile/profile";
 import { RegisterPage } from "./register/register";
 import { ResetPasswordPage } from "./reset_password/reset_password";
+import { FeedPage } from "./feed/feed";
 
 export {
   ForgotPasswordPage,
@@ -18,4 +19,5 @@ export {
   ProfilePage,
   RegisterPage,
   ResetPasswordPage,
+  FeedPage,
 };

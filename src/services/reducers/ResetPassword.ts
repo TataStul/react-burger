@@ -1,26 +1,34 @@
 import {
-  RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_REJECTED,
+  RESET_PASSWORD_REQUEST,
   RESETTING_PASSWORD,
-} from "../actions/ResetPassword";
+} from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+// import { ActionType } from "../../utils/action.type";
+
+import { UserResponse } from "../..//utils/user-response.type";
+import { TResetPasswordAction } from "../actions/ResetPassword";
+
+type TResetPasswordState = {
+  email: string;
+  error: unknown;
+  response?: UserResponse;
+};
 
 const initialState = {
   email: "",
-  response: {},
   error: null,
 };
 
 export const resetPasswordReducer = (
   state = initialState,
-  action: ActionType
-) => {
+  action: TResetPasswordAction
+): TResetPasswordState => {
   switch (action.type) {
     case RESET_PASSWORD_REJECTED: {
       return {
         ...state,
-        error: action.payload?.error,
+        error: action?.error,
       };
     }
     case RESET_PASSWORD_REQUEST: {
@@ -32,7 +40,7 @@ export const resetPasswordReducer = (
     case RESETTING_PASSWORD: {
       return {
         ...state,
-        response: action.payload,
+        response: action.response,
       };
     }
     default: {

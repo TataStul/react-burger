@@ -1,0 +1,28 @@
+.card {
+  padding: 24px;
+  border-radius: 40px;
+  cursor: pointer;
+  background-color: #1c1c21;
+}
+
+.row,
+.amount {
+  display: flex;
+}
+
+.row {
+  justify-content: space-between;
+}
+
+.amount {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.statusErrorText {
+  color: #ff0f0f;
+}
+
+.statusSuccessText {
+  color: #02dddd;
+}

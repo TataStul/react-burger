@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { UnknownAction } from "redux";
 
 import {
   Button,
@@ -12,39 +10,29 @@ import {
 import { Layout } from "../../components/Layout/Layout";
 
 import { fetchResetPasswordThunk } from "../../services/actions/ResetPassword";
-import { ResponseState } from "../../utils/store-response.type";
 import { UserResetPassword } from "../../utils/user-reset-password.type";
 import { useForm } from "../../utils/use-form";
 import { Routes as RoutesName } from "../../utils/routes";
+import { useDispatch, useSelector } from "../../utils/store-hooks";
 
 import styles from "./reset_password.module.css";
-
-type ResetPasswordSelector = {
-  resetPassword: ResponseState;
-};
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const useResetPasswordSelector =
-    useSelector.withTypes<ResetPasswordSelector>();
-
-  const resettingPassword = useResetPasswordSelector(
+  const resettingPassword = useSelector(
     (state) => state.resetPassword.response
   );
-
   const [values, handleChange] = useForm<Required<UserResetPassword>>({
     password: "",
     token: "",
   });
-
   const resetPassword = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     dispatch(
       fetchResetPasswordThunk({
         ...values,
-      }) as unknown as UnknownAction
+      })
     );
   };
 

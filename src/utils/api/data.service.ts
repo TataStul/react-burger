@@ -1,5 +1,6 @@
 import { request } from "../request";
 import { Request } from "../request.enum";
+import { getCookie } from "../cookie-get";
 
 import { UserResetPassword } from "../user-reset-password.type";
 
@@ -12,6 +13,7 @@ const makeOrder = (ingredients: string[]) => {
     method: Request.POST,
     headers: {
       "Content-Type": "application/json",
+      Authorization: getCookie("accessToken")!,
     },
     body: JSON.stringify({ ingredients }),
   });

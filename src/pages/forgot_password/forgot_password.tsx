@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { UnknownAction } from "redux";
 
 import {
   Button,
@@ -11,32 +9,22 @@ import {
 import { Layout } from "../../components/Layout/Layout";
 
 import { fetchForgotPasswordThunk } from "../../services/actions/ForgotPassword";
-import { UserResponse } from "../../utils/user-response.type";
 import { useForm } from "../../utils/use-form";
 import { Routes } from "../../utils/routes";
+import { useDispatch, useSelector } from "../../utils/store-hooks";
 
 import styles from "./forgot_password.module.css";
-
-type RegisterPageSelector = {
-  forgotPassword: { response: UserResponse };
-};
 
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const useRegisterPageSelector = useSelector.withTypes<RegisterPageSelector>();
-  const response = useRegisterPageSelector(
-    (state) => state.forgotPassword.response
-  );
+  const response = useSelector((state) => state.forgotPassword.response);
   const [values, handleChange] = useForm<Required<{ email: string }>>({
     email: "",
   });
-
   const recoverPassword = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    dispatch(
-      fetchForgotPasswordThunk(values.email) as unknown as UnknownAction
-    );
+    dispatch(fetchForgotPasswordThunk(values.email));
   };
 
   useEffect(() => {

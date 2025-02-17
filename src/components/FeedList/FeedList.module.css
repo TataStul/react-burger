@@ -1,0 +1,15 @@
+.feedGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: auto;
+  max-width: calc(100vh - 30vh);
+  max-height: calc(100vh - 25vh);
+  overflow: auto;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  min-width: 40%;
+}

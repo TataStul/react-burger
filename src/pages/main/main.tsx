@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { UnknownAction } from "redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -8,22 +5,12 @@ import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredie
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import { Layout } from "../../components/Layout/Layout";
 
-import { fetchIngredientsThunk } from "../../services/actions/BurgerIngredients";
-
-import { ErrorType } from "../../utils/error.type";
+import { useSelector } from "../../utils/store-hooks";
 
 import styles from "./main.module.css";
 
 export function MainPage() {
-  const dispatch = useDispatch();
-
-  const error = useSelector(
-    (state: { error?: ErrorType }) => state?.error?.message
-  );
-
-  useEffect(() => {
-    dispatch(fetchIngredientsThunk() as unknown as UnknownAction);
-  }, [dispatch]);
+  const error = useSelector((state) => state?.error?.message);
 
   return (
     <Layout>

@@ -9,40 +9,53 @@ import {
   MAKING_REQUEST_ORDER,
   ADDING_BUN,
   RECALCULATING_AMOUNT,
-} from "../actions/BurgerConstructor";
+} from "../constants";
 
-import { ActionType } from "../../utils/action.type";
+import { Ingredient } from "../../utils/ingredient.type";
+import { Order } from "../../utils/order.type";
+import { TBurgerConstructorActions } from "../actions/BurgerConstructor";
 
-const initialState = {
+type TBurgerConstructorState = {
+  burgerConstructor: Ingredient[];
+  amount?: number;
+  error: unknown;
+  loading: boolean;
+  order?: Order;
+  buns?: Ingredient;
+  ingredient?: Ingredient;
+};
+
+const initialState: TBurgerConstructorState = {
   burgerConstructor: [],
   amount: 0,
-  order: {},
-  buns: {},
-  ingredient: {},
   error: null,
+  loading: false,
 };
 
 export const burgerConstructorReducer = (
   state = initialState,
-  action: ActionType
-) => {
+  action: TBurgerConstructorActions
+): TBurgerConstructorState => {
   switch (action.type) {
     case ADDING_INGREDIENT: {
       return {
         ...state,
-        burgerConstructor: [...state.burgerConstructor, action.payload],
+        burgerConstructor: [
+          ...state.burgerConstructor,
+          action.ingredient,
+        ] as Ingredient[],
       };
     }
     case MOVING_INGREDIENT: {
       return {
         ...state,
-        burgerConstructor: action.payload,
+        burgerConstructor: action?.burgerConstructor as Ingredient[],
       };
     }
     case REMOVING_INGREDIENT: {
       return {
         ...state,
-        burgerConstructor: action.payload,
+        burgerConstructor: action?.burgerConstructor as Ingredient[],
       };
     }
     case GETTING_BURGER_CONSTRUCTOR: {
@@ -54,43 +67,42 @@ export const burgerConstructorReducer = (
     case MAKING_ORDER: {
       return {
         ...state,
-        order: action.payload,
+        order: action?.order,
       };
     }
     case CLEARING_ORDER: {
       return {
         ...state,
         burgerConstructor: [],
-        buns: null,
+        buns: undefined,
       };
     }
     case MAKING_REJECTED_ORDER: {
       return {
         ...state,
-        order: [],
-        error: action.payload,
+        order: undefined,
+        error: action?.error,
       };
     }
     case MAKING_REQUEST_ORDER: {
       return {
         ...state,
-        order: [],
+        order: undefined,
         error: null,
       };
     }
     case ADDING_BUN: {
       return {
         ...state,
-        buns: action.payload,
+        buns: action?.bun,
       };
     }
     case RECALCULATING_AMOUNT: {
       return {
         ...state,
-        amount: action.payload,
+        amount: action?.amount,
       };
     }
-
     default: {
       return state;
     }

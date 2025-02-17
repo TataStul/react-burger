@@ -20,6 +20,7 @@ function AppHeader() {
 
   const [activeTabMain, setActiveTabMain] = useState(false);
   const [activeTabProfile, setActiveTabProfile] = useState(false);
+  const [activeTabFeed, setActiveTabFeed] = useState(false);
 
   useEffect(() => {
     if (location.pathname === RouteName.Main) {
@@ -27,6 +28,9 @@ function AppHeader() {
     }
     if (location.pathname === RouteName.Profile) {
       setActiveTabProfile(true);
+    }
+    if (location.pathname === RouteName.Feed) {
+      setActiveTabFeed(true);
     }
   }, [location]);
 
@@ -39,9 +43,11 @@ function AppHeader() {
               <BurgerIcon type="primary" />
             </ItemHeader>
           </NavLink>
-          <ItemHeader title="Лента заказов" isActive={false}>
-            <ListIcon type="secondary" />
-          </ItemHeader>
+          <NavLink to={RouteName.Feed} className={`${styles.link}`}>
+            <ItemHeader title="Лента заказов" isActive={activeTabFeed}>
+              <ListIcon type="secondary" />
+            </ItemHeader>
+          </NavLink>
         </div>
         <Logo />
         <NavLink to={RouteName.Profile} className={`${styles.link}`}>
