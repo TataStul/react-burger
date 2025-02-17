@@ -25,26 +25,26 @@ export const wsReducer = (
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
-        wsConnected: false,
         error: undefined,
+        wsConnected: false,
       };
     case WS_CONNECTION_ERROR:
       return {
         ...state,
-        wsConnected: false,
         error: action.error,
+        wsConnected: false,
       };
     case WS_CONNECTION_START:
       return {
         ...state,
-        wsConnected: false,
         error: undefined,
+        wsConnected: false,
       };
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
-        wsConnected: true,
         error: undefined,
+        wsConnected: true,
       };
     case WS_GET_MESSAGE:
       return {
@@ -55,8 +55,8 @@ export const wsReducer = (
     case WS_GET_USER_ORDERS:
       return {
         ...state,
-        wsConnected: true,
         error: undefined,
+        wsConnected: true,
       };
     default:
       return state;
