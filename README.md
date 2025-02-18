@@ -38,3 +38,5 @@ ya.praktikum
    `git push`
 
 ## Ссылка на деплой
+
+https://react-burger-stulkova.netlify.app/
