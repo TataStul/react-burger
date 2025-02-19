@@ -67,6 +67,7 @@ export function FeedDetail() {
     return () => {
       dispatch(closeConnection());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -86,7 +87,7 @@ export function FeedDetail() {
             <p
               className={`text text_type_main-small ${styles.statusText} pb-15`}
             >
-              {getStateName(currentFeed.status)}
+              {getStateName(currentFeed.status as Status)}
             </p>
             <p className="text text_type_main-medium pb-6">Состав:</p>
             <div className={`${styles.scrollbar} pb-10`}>

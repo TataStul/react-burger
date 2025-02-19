@@ -24,7 +24,7 @@ type Props = {
 function BurgerConstructorItem(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [, drag] = useDrag(() => ({
     type: DndType.Ingredient,
     item: { index: props.index },
     collect: (monitor) => {
@@ -34,17 +34,17 @@ function BurgerConstructorItem(props: Props) {
     },
   }));
 
-  const [{ isOver }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: DndType.Ingredient,
-    hover: (item: Props, monitor) => {
-      calculateNewElementPosition(item, monitor);
+    hover: (item: Props) => {
+      calculateNewElementPosition(item);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
   });
 
-  const calculateNewElementPosition = (item: Props, monitor: any) => {
+  const calculateNewElementPosition = (item: Props) => {
     if (!ref.current) {
       return;
     }

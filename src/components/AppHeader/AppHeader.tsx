@@ -35,7 +35,10 @@ function AppHeader() {
   }, [location]);
 
   return (
-    <header className={`pt-4 pb-4 ${styles.navigation}`}>
+    <header
+      id={"uniqueHeader"}
+      className={`pt-4 pb-4 ${styles.navigationPanel}`}
+    >
       <nav className={styles.grid}>
         <div className={styles.itemGroup}>
           <NavLink to={RouteName.Main} className={`${styles.link}`}>

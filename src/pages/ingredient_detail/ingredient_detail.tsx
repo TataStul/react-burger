@@ -25,6 +25,7 @@ export function IngredientDetailPage() {
         dispatch(getIngredientDetails(element));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients]);
 
   return (

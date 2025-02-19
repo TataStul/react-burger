@@ -10,7 +10,7 @@ type TUserState = {
   isAuth: boolean;
 };
 
-const initialState: TUserState = {
+export const initialStateOfUser: TUserState = {
   name: "",
   email: "",
   password: "",
@@ -18,7 +18,7 @@ const initialState: TUserState = {
 };
 
 export const userReducer = (
-  state = initialState,
+  state = initialStateOfUser,
   action: TUserActions | TLoginActions
 ): TUserState => {
   switch (action.type) {

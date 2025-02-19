@@ -1,10 +1,10 @@
-.navigation,
+.navigationPanel,
 .itemGroup,
 .grid {
   display: flex;
 }
 
-.navigation {
+.navigationPanel {
   flex-direction: column;
   align-items: center;
   width: 100%;

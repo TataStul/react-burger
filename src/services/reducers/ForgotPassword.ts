@@ -13,13 +13,13 @@ type TForgotPasswordState = {
   response?: UserResponse;
 };
 
-const initialState: TForgotPasswordState = {
+export const initialStateOfForgotPassword: TForgotPasswordState = {
   error: null,
   email: "",
 };
 
 export const forgotPasswordReducer = (
-  state = initialState,
+  state = initialStateOfForgotPassword,
   action: TForgotPasswordActions
 ): TForgotPasswordState => {
   switch (action.type) {

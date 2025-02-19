@@ -7,46 +7,44 @@ import {
   WS_GET_USER_ORDERS,
 } from "../constants";
 
-import { TWSAction } from "../../utils/ws-action.type";
+import { TWsActions } from "../actions/WS";
 
 type TWSState = {
   wsConnected: boolean;
-  error?: Event;
+  error?: unknown;
   messages?: never[];
 };
 
-const initialState: TWSState = {
-  wsConnected: false,
-};
+export const initialStateOfWs: TWSState = { wsConnected: false };
 
 export const wsReducer = (
-  state = initialState,
-  action: TWSAction
+  state = initialStateOfWs,
+  action: TWsActions
 ): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
-        wsConnected: false,
         error: undefined,
+        wsConnected: false,
       };
     case WS_CONNECTION_ERROR:
       return {
         ...state,
+        error: action.error,
         wsConnected: false,
-        error: action.payload,
       };
     case WS_CONNECTION_START:
       return {
         ...state,
-        wsConnected: false,
         error: undefined,
+        wsConnected: false,
       };
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
-        wsConnected: true,
         error: undefined,
+        wsConnected: true,
       };
     case WS_GET_MESSAGE:
       return {
@@ -57,8 +55,8 @@ export const wsReducer = (
     case WS_GET_USER_ORDERS:
       return {
         ...state,
-        wsConnected: true,
         error: undefined,
+        wsConnected: true,
       };
     default:
       return state;

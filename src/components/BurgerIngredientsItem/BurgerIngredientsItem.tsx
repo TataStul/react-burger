@@ -15,7 +15,7 @@ type Props = {
 };
 
 function BurgerIngredientsItem(props: Props) {
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: DndType.NewIngredient,
       item: props.element,
@@ -27,10 +27,7 @@ function BurgerIngredientsItem(props: Props) {
   );
 
   return (
-    <div
-      ref={drag}
-      className={`${styles.card} ${isDragging ? styles.cardDragging : ""}`}
-    >
+    <div id={"dragstart"} ref={drag} className={styles.card}>
       {props.count ? (
         <div className={styles.counter}>
           <Counter count={props.count} size="default" />

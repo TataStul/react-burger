@@ -40,6 +40,7 @@ export function ResetPasswordPage() {
     if (resettingPassword.success) {
       navigate(RoutesName.Login);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resettingPassword]);
 
   return (

@@ -14,6 +14,7 @@ export interface IWsConnectionClosed {
 }
 export interface IWsConnectionError {
   readonly type: typeof WS_CONNECTION_ERROR;
+  readonly error: unknown;
 }
 export interface IWsInit {
   readonly type: typeof WS_CONNECTION_START;
@@ -44,6 +45,10 @@ export type TWsActions =
 // consts
 export const closeConnection = (): IWsConnectionClosed => ({
   type: WS_CONNECTION_CLOSED,
+});
+export const catchConnectionError = (error: unknown): IWsConnectionError => ({
+  type: WS_CONNECTION_ERROR,
+  error,
 });
 export const initWs = (payload: string): IWsInit => ({
   type: WS_CONNECTION_START,
